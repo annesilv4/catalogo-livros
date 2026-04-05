@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Book } from "../types/Book";
 
-const API_URL = "https://crudcrud.com/api/613bf0d4dd96471f8874c7e49addf41d/books";
+const API_URL = "https://crudcrud.com/api/95aace2898f843a38f471dd8ca60b928/books";
 
 export const createBook = async (values: Book): Promise<Book> => {
     try {
