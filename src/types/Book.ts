@@ -5,4 +5,6 @@ export interface Book {
     title: string;
     author: string;
     status: BookStatus;
+    createdAt: string;
+    updatedAt: string;
 }
