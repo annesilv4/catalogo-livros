@@ -8,3 +8,5 @@ export interface Book {
     createdAt: string;
     updatedAt: string;
 }
+
+export type NewBook = Pick<Book, "title" | "author" | "status">;
