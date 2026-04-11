@@ -1,11 +1,18 @@
 import axios from "axios";
-import type { Book } from "../types/Book";
+import type { Book, NewBook } from "../types/Book";
 
 const API_URL = "https://crudcrud.com/api/6c98f7882cfd4c84855b442168533bdc/books";
 
-export const createBook = async (values: Book): Promise<Book> => {
+export const createBook = async (values: NewBook): Promise<Book> => {
+    const timestamp = new Date().toISOString();
+    const payload = {
+        ...values,
+        createdAt: timestamp,
+        updatedAt: timestamp,
+    };
+
     try {
-        const response = await axios.post(API_URL, values);
+        const response = await axios.post(API_URL, payload);
         return response.data;
     } catch (err) {
         console.error("Error [creating book]:", err);
@@ -27,7 +34,18 @@ export const updateBook = async (id: string, values: Book): Promise<void> => {
     const { _id, ...data } = values;
 
     try {
-        await axios.put(`${API_URL}/${id}`, data);
+        const currentBookResponse = await axios.get<Book>(`${API_URL}/${id}`);
+        const currentBook = currentBookResponse.data;
+
+        const payload = {
+            ...data,
+            updatedAt:
+                currentBook.status !== values.status
+                    ? new Date().toISOString()
+                    : currentBook.updatedAt,
+        };
+
+        await axios.put(`${API_URL}/${id}`, payload);
     } catch (err) {
         console.error("Error [updating book]:", err);
         throw new Error("Erro ao atualizar o livro");
