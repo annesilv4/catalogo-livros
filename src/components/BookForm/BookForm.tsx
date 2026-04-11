@@ -1,12 +1,8 @@
-import type { BookStatus } from "../../types/Book";
+import type { BookStatus, NewBook } from "../../types/Book";
 import { useState } from "react";
 
 interface BookFormProps {
-    onAdd: (book: {
-        title: string;
-        author: string;
-        status: BookStatus;
-    }) => void;
+    onAdd: (book: NewBook) => void;
 }
 
 export default function BookForm({ onAdd }: BookFormProps) {
