@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { listBook, createBook, deleteBook } from "../services/api";
-import type { Book } from "../types/Book";
+import type { Book, NewBook } from "../types/Book";
 
 export function useBooks() {
     const [books, setBooks] = useState<Book[]>([]);
@@ -19,7 +19,7 @@ export function useBooks() {
         }
     }
 
-    const addBook = async (book: Omit<Book, "_id">) => {
+    const addBook = async (book: NewBook) => {
         try {
             setLoading(true);
             const data = await createBook(book);
