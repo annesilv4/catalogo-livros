@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Book, NewBook } from "../types/Book";
 
-const API_URL = "https://crudcrud.com/api/6c98f7882cfd4c84855b442168533bdc/books";
+const API_URL = "https://crudcrud.com/api/b699759aff6f4c0db8bf79b63c5c81e5/books";
 
 export const createBook = async (values: NewBook): Promise<Book> => {
     const timestamp = new Date().toISOString();
