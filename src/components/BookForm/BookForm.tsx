@@ -3,7 +3,7 @@ import type { BookStatus, NewBook } from "../../types/Book";
 import { useState } from "react";
 
 interface BookFormProps {
-    onAdd: (book: NewBook) => void;
+    onAdd: (book: NewBook) => Promise<void>;
 }
 
 export default function BookForm({ onAdd }: BookFormProps) {
@@ -12,8 +12,9 @@ export default function BookForm({ onAdd }: BookFormProps) {
     const [status, setStatus] = useState<BookStatus>("unread");
     const [formError, setFormError] = useState("");
     const [success, setSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!author || !title) {
@@ -22,14 +23,21 @@ export default function BookForm({ onAdd }: BookFormProps) {
             return;
         }
 
-        onAdd({ title, author, status });
+        try {
+            setLoading(true);
+            setFormError("");
+            await onAdd({ title, author, status });
 
-        setAuthor("");
-        setTitle("");
-        setStatus("unread");
-        setFormError("");
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
+            setAuthor("");
+            setTitle("");
+            setStatus("unread");
+            setSuccess(true);
+            setTimeout(() => setSuccess(false), 3000);
+        } catch {
+            setFormError("Erro ao adicionar o livro. Tente novamente.");
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -72,8 +80,10 @@ export default function BookForm({ onAdd }: BookFormProps) {
             {success && <span className={Style.success}>Livro adicionado com sucesso!</span>}
 
             <div className="flex justify-between">
-                <button className={Style.cancelBtn}>Cancelar</button>
-                <button className={Style.submitBtn} type="submit">Adicionar Livro</button>
+                <button className={Style.cancelBtn} disabled={loading}>Cancelar</button>
+                <button className={Style.submitBtn} type="submit" disabled={loading}>
+                    {loading ? "Adicionando..." : "Adicionar Livro"}
+                </button>
             </div>
         </form>
     )
