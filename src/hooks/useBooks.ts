@@ -19,13 +19,16 @@ export function useBooks() {
         }
     }
 
-    const addBook = async (book: NewBook) => {
+    const addBook = async (book: NewBook): Promise<void> => {
         try {
             setLoading(true);
             const data = await createBook(book);
             setBooks((prev) => [...prev, data]);
         } catch (error) {
             setError(`Error [creating book]: ${error}`);
+            throw error;
+        } finally {
+            setLoading(false);
         }
     }
 
