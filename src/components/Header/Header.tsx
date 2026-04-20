@@ -1,6 +1,6 @@
 import { Container } from "../Container/Container";
 import Style from "./Header.module.css";
-import Logo from "../../../public/assets/livro.png"
+import Logo from "../../../public/assets/logo-page.png"
 
 export default function Header({ ShowSearch = true, showNav = true }: { ShowSearch?: boolean, showNav?: boolean }) {
     return (
