@@ -1,18 +1,45 @@
 import Style from "./BookForm.module.css";
-import type { BookStatus, NewBook } from "../../types/Book";
-import { useState } from "react";
+import type { Book, BookStatus, NewBook } from "../../types/Book";
+import { useState, useEffect } from "react";
+import { getBook } from "../../services/api";
 
 interface BookFormProps {
-    onAdd: (book: NewBook) => Promise<void>;
+    onAdd?: (book: NewBook) => Promise<void>;
+    onEdit?: (id: string, book: Book) => Promise<void>;
+    bookId?: string;
 }
 
-export default function BookForm({ onAdd }: BookFormProps) {
+export default function BookForm({ onAdd, onEdit, bookId }: BookFormProps) {
     const [author, setAuthor] = useState("");
     const [title, setTitle] = useState("");
     const [status, setStatus] = useState<BookStatus>("unread");
     const [formError, setFormError] = useState("");
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const isEdit = !!bookId;
+
+    useEffect(() => {
+        if (!bookId) return;
+
+        const fetchBook = async () => {
+            try {
+                setLoading(true);
+                const book = await getBook(bookId);
+                setTitle(book.title);
+                setAuthor(book.author);
+                setStatus(book.status);
+            } catch (err) {
+                setLoading(false);
+                setFormError("Erro ao buscar o livro. Tente novamente.");
+                setSuccess(false);
+            } finally {
+                setFormError("");
+            }
+        }
+
+        fetchBook();
+    }, [bookId])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -26,15 +53,20 @@ export default function BookForm({ onAdd }: BookFormProps) {
         try {
             setLoading(true);
             setFormError("");
-            await onAdd({ title, author, status });
-
+            if (isEdit && onEdit) {
+                await onEdit(bookId, { _id: bookId, title, author, status, createdAt: "", updatedAt: "" });
+                setSuccess(true);
+                setTimeout(() => setSuccess(false), 3000);
+            } else if (onAdd) {
+                await onAdd({ title, author, status });
+            }
             setAuthor("");
             setTitle("");
             setStatus("unread");
             setSuccess(true);
             setTimeout(() => setSuccess(false), 3000);
         } catch {
-            setFormError("Erro ao adicionar o livro. Tente novamente.");
+            setFormError(isEdit ? "Erro ao editar o livro. Tente novamente." : "Erro ao adicionar o livro. Tente novamente.");
         } finally {
             setLoading(false);
         }
