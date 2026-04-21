@@ -8,7 +8,6 @@ export const createBook = async (values: NewBook): Promise<Book> => {
     const payload = {
         ...values,
         createdAt: timestamp,
-        updatedAt: timestamp,
     };
 
     try {
@@ -19,6 +18,16 @@ export const createBook = async (values: NewBook): Promise<Book> => {
         throw new Error("Internal Server Error");
     }
 };
+
+export const getBook = async (id: string): Promise<Book> => {
+    try {
+        const response = await axios.get<Book>(`${API_URL}/${id}`);
+        return response.data;
+    } catch (err) {
+        console.error("Error [getting book]:", err);
+        throw new Error("Erro ao buscar o livro");
+    }
+}
 
 export const listBook = async (): Promise<Book[]> => {
     try {
@@ -34,7 +43,7 @@ export const updateBook = async (id: string, values: Book): Promise<void> => {
     const { _id, ...data } = values;
 
     try {
-        const currentBookResponse = await axios.get<Book>(`${API_URL}/${id}`);
+        const currentBookResponse = await axios.put<Book>(`${API_URL}/${id}`);
         const currentBook = currentBookResponse.data;
 
         const payload = {
