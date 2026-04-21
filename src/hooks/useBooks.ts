@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { listBook, createBook, deleteBook } from "../services/api";
+import { listBook, createBook, deleteBook, updateBook } from "../services/api";
 import type { Book, NewBook } from "../types/Book";
 
 export function useBooks() {
@@ -41,6 +41,21 @@ export function useBooks() {
         }
     }
 
+    const editBook = async (id: string, values: Book) => {
+        try {
+            setLoading(true);
+            await updateBook(id, values);
+            setBooks((prev) =>
+                prev.map((book) => (book._id === id ? { ...book, ...values } : book))
+            );
+        } catch (err) {
+            setError(`Error [updating book]: ${err}`);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         loadBooks();
     }, []);
@@ -50,6 +65,7 @@ export function useBooks() {
         loading,
         error,
         addBook,
+        editBook,
         removeBook,
     }
 }
