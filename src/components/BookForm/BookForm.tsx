@@ -29,12 +29,10 @@ export default function BookForm({ onAdd, onEdit, bookId }: BookFormProps) {
                 setTitle(book.title);
                 setAuthor(book.author);
                 setStatus(book.status);
-            } catch (err) {
-                setLoading(false);
+            } catch {
                 setFormError("Erro ao buscar o livro. Tente novamente.");
-                setSuccess(false);
             } finally {
-                setFormError("");
+                setLoading(false);
             }
         }
 
@@ -55,14 +53,12 @@ export default function BookForm({ onAdd, onEdit, bookId }: BookFormProps) {
             setFormError("");
             if (isEdit && onEdit) {
                 await onEdit(bookId, { _id: bookId, title, author, status, createdAt: "", updatedAt: "" });
-                setSuccess(true);
-                setTimeout(() => setSuccess(false), 3000);
             } else if (onAdd) {
                 await onAdd({ title, author, status });
+                setAuthor("");
+                setTitle("");
+                setStatus("unread");
             }
-            setAuthor("");
-            setTitle("");
-            setStatus("unread");
             setSuccess(true);
             setTimeout(() => setSuccess(false), 3000);
         } catch {
@@ -109,12 +105,12 @@ export default function BookForm({ onAdd, onEdit, bookId }: BookFormProps) {
             </div>
 
             {formError && <span className={Style.error}>{formError}</span>}
-            {success && <span className={Style.success}>Livro adicionado com sucesso!</span>}
+            {success && <span className={Style.success}>{isEdit ? "Livro editado com sucesso!" : "Livro adicionado com sucesso!"}</span>}
 
             <div className="flex justify-between">
                 <button className={Style.cancelBtn} disabled={loading}>Cancelar</button>
                 <button className={Style.submitBtn} type="submit" disabled={loading}>
-                    {loading ? "Adicionando..." : "Adicionar Livro"}
+                    {loading ? (isEdit ? "Salvando..." : "Adicionando...") : (isEdit ? "Salvar Alterações" : "Adicionar Livro")}
                 </button>
             </div>
         </form>
