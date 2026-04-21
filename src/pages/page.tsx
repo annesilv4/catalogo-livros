@@ -1,7 +1,7 @@
-import BookList from "../../components/BookList/BookList";
-import { Container } from "../../components/Container/Container";
-import Header from "../../components/Header/Header";
-import { useBooks } from "../../hooks/useBooks";
+import BookList from "../components/BookList/BookList";
+import { Container } from "../components/Container/Container";
+import Header from "../components/Header/Header";
+import { useBooks } from "../hooks/useBooks";
 import { useEffect } from "react";
 
 export default function Home() {
