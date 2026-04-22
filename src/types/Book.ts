@@ -10,3 +10,4 @@ export interface Book {
 }
 
 export type NewBook = Pick<Book, "title" | "author" | "status">;
+export type BookUpdate = Pick<Book, "title" | "author" | "status">;
