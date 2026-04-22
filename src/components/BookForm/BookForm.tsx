@@ -1,15 +1,17 @@
 import Style from "./BookForm.module.css";
-import type { Book, BookStatus, NewBook } from "../../types/Book";
+import type { BookStatus, BookUpdate, NewBook } from "../../types/Book";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getBook } from "../../services/api";
 
 interface BookFormProps {
     onAdd?: (book: NewBook) => Promise<void>;
-    onEdit?: (id: string, book: Book) => Promise<void>;
+    onEdit?: (id: string, book: BookUpdate) => Promise<void>;
     bookId?: string;
 }
 
 export default function BookForm({ onAdd, onEdit, bookId }: BookFormProps) {
+    const navigate = useNavigate();
     const [author, setAuthor] = useState("");
     const [title, setTitle] = useState("");
     const [status, setStatus] = useState<BookStatus>("unread");
@@ -52,12 +54,13 @@ export default function BookForm({ onAdd, onEdit, bookId }: BookFormProps) {
             setLoading(true);
             setFormError("");
             if (isEdit && onEdit) {
-                await onEdit(bookId, { _id: bookId, title, author, status, createdAt: "", updatedAt: "" });
+                await onEdit(bookId, { title, author, status });
+                navigate("/");
+                return;
             } else if (onAdd) {
                 await onAdd({ title, author, status });
-                setAuthor("");
-                setTitle("");
-                setStatus("unread");
+                navigate("/");
+                return;
             }
             setSuccess(true);
             setTimeout(() => setSuccess(false), 3000);
