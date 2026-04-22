@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Book, NewBook } from "../types/Book";
+import type { Book, BookUpdate, NewBook } from "../types/Book";
 
 const API_URL = "https://crudcrud.com/api/156a524a9f244773aaa0a5fc9e655992/books";
 
@@ -40,20 +40,22 @@ export const listBook = async (): Promise<Book[]> => {
     }
 };
 
-export const updateBook = async (id: string, values: Book): Promise<void> => {
-    const { _id, ...data } = values;
+export const updateBook = async (id: string, values: BookUpdate): Promise<void> => {
 
     try {
-        const currentBookResponse = await axios.put<Book>(`${API_URL}/${id}`);
+        const currentBookResponse = await axios.get<Book>(`${API_URL}/${id}`);
         const currentBook = currentBookResponse.data;
 
         const payload = {
-            ...data,
+            ...currentBook,
+            ...values,
             updatedAt:
                 currentBook.status !== values.status
                     ? new Date().toISOString()
                     : currentBook.updatedAt,
         };
+
+        delete (payload as Partial<Book>)._id;
 
         await axios.put(`${API_URL}/${id}`, payload);
     } catch (err) {
