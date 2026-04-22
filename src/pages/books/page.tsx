@@ -2,6 +2,7 @@ import Header from "../../components/Header/Header";
 import Style from "./AddBookPage.module.css";
 import BookForm from "../../components/BookForm/BookForm";
 import { Container } from "../../components/Container/Container";
+import Footer from "../../components/Footer/Footer";
 import { useBooks } from "../../hooks/useBooks";
 import { useEffect } from "react";
 
@@ -13,7 +14,7 @@ export default function AddBookPage() {
     const { addBook } = useBooks();
 
     return (
-        <>
+        <div className="min-h-screen flex flex-col">
             <Header
                 ShowSearch={false}
                 showNav={false}
@@ -29,6 +30,8 @@ export default function AddBookPage() {
                     </div>
                 </Container>
             </main>
-        </>
+
+            <Footer />
+        </div>
     )
 }

@@ -2,6 +2,7 @@ import Header from "../../../components/Header/Header";
 import Style from './EditBookPage.module.css';
 import BookForm from "../../../components/BookForm/BookForm";
 import { Container } from "../../../components/Container/Container";
+import Footer from "../../../components/Footer/Footer";
 import { useBooks } from "../../../hooks/useBooks";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -27,7 +28,7 @@ export default function EditBookPage() {
     }
 
     return (
-        <>
+        <div>
             <Header
                 ShowSearch={false}
                 showNav={false}
@@ -43,6 +44,8 @@ export default function EditBookPage() {
                     </div>
                 </Container>
             </main>
-        </>
+
+            <Footer />
+        </div>
     )
 }

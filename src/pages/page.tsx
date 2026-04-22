@@ -1,5 +1,6 @@
 import BookList from "../components/BookList/BookList";
 import { Container } from "../components/Container/Container";
+import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
 import { useBooks } from "../hooks/useBooks";
 import { useEffect } from "react";
@@ -12,7 +13,7 @@ export default function Home() {
     }, []);
 
     return (
-        <>
+        <div>
             <Header />
 
             <main className="bg-gray-300 min-h-[calc(100vh-72px)]">
@@ -25,6 +26,8 @@ export default function Home() {
                     />
                 </Container>
             </main>
-        </>
+
+            <Footer />
+        </div>
     )
 }
