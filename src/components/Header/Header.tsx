@@ -1,8 +1,9 @@
 import { Container } from "../Container/Container";
 import Style from "./Header.module.css";
 import Logo from "../../../public/assets/logo-page.png"
+import { Link } from "react-router-dom";
 
-export default function Header({ ShowSearch = true, showNav = true }: { ShowSearch?: boolean, showNav?: boolean }) {
+export default function Header({ showNav = true }: { showNav?: boolean }) {
     return (
         <header className={Style.header}>
             <Container>
@@ -12,17 +13,9 @@ export default function Header({ ShowSearch = true, showNav = true }: { ShowSear
                         <h1>My Library</h1>
                     </div>
 
-                    {ShowSearch && (
-                        <div className={Style.search}>
-                            <input type="text" placeholder="Buscar livro..." />
-                        </div>
-                    )}
-
                     {showNav && (
                         <nav id={Style.nav}>
-                            <a href="">Início</a>
-                            <a href="">Catálogo</a>
-                            <a href="">Favoritos</a>
+                            <Link to="/">Início</Link>
                         </nav>
                     )}
                 </div>

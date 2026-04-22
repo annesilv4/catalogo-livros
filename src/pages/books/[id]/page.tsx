@@ -30,7 +30,6 @@ export default function EditBookPage() {
     return (
         <div>
             <Header
-                ShowSearch={false}
                 showNav={false}
             />
 
