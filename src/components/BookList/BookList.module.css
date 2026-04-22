@@ -1,0 +1,31 @@
+.error {
+  color: var(--text-error);
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.bookList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+  justify-items: center;
+  padding: 30px 0px;
+}
+
+.addBookButton {
+  background-color: var(--color-brd);
+  color: var(--txt-color-secondary);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  align-self: flex-start;
+}
+
+.addBookButton:hover {
+  opacity: 0.85;
+}

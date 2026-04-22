@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
 import type { Book } from "../../types/Book";
+import BookItem from "../BookItem/BookItem";
+import Style from "./BookList.module.css";
 
 interface BookListProps {
 
@@ -15,24 +18,26 @@ export default function BookList({ books, loading, error, onDelete }: BookListPr
     }
 
     if (error) {
-        return <p>Erro na listagem dos livros</p>
+        return <p className={Style.error}>Erro na listagem dos livros</p>
     }
 
     return (
-        <div>
-            <h1>📚 Catálogo de Livros</h1>
+        <div className="flex flex-col">
+            <h1 className="text-center font-medium text-2xl border-b-2 border-yellow-500">Seu catálogo de livro(s)</h1>
 
-            {books.map((book) => (
-                <div key={book._id}>
-                    <p>{book.title}</p>
-                    <p>{book.author}</p>
-                    <span>{book.status}</span>
+            <div className="w-full h-16 p-2.5 flex justify-end">
+                <Link to="/books" className={Style.addBookButton}>Adicionar Livro</Link>
+            </div>
 
-                    <button onClick={() => book._id && onDelete(book._id)}>
-                        Remover Livro
-                    </button>
-                </div>
-            ))}
+            <div className={Style.bookList}>
+                {books.map((book) => (
+                    <BookItem
+                        key={book._id}
+                        book={book}
+                        onDelete={onDelete}
+                    />
+                ))}
+            </div>
         </div>
     )
 }
