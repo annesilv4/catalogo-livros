@@ -16,7 +16,7 @@ export default function Home() {
             <Header />
 
             <main className="bg-gray-300 min-h-[calc(100vh-72px)]">
-                <Container className="bg-white p-10 h-230">
+                <Container className="bg-white p-10 h-230 flex flex-col">
                     <BookList
                         books={books}
                         loading={loading}
